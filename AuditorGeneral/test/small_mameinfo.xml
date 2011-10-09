@@ -1820,5 +1820,59 @@
 		</dipswitch>
 		<driver status="good" emulation="good" color="good" sound="good" graphic="good" savestate="supported" palettesize="32"/>
 	</game>
+	<game name="18w2" sourcefile="mw18w.c" ismechanical="yes" cloneof="18w" romof="18w">
+		<description>18 Wheeler (set 2)</description>
+		<year>1979</year>
+		<manufacturer>Midway</manufacturer>
+		<rom name="18w_b1.rom1" size="2048" crc="cbc0fb2c" sha1="66b14f0d76baebbd64e8ed107e536ad811d55273" region="maincpu" offset="0"/>
+		<rom name="18w_b2.rom2" merge="18w_a2.rom2" size="2048" crc="efbadee8" sha1="834eaf8ca50544123de7529b90b828cf46b1c001" region="maincpu" offset="800"/>
+		<rom name="18w_b3.rom3" merge="18w_b3.rom3" size="2048" crc="214606f6" sha1="9a9dc20259b4462661c6be410d98d2be54657a0e" region="maincpu" offset="1000"/>
+		<rom name="18w_b4.rom4" merge="18w_a4.rom4" size="2048" crc="e88ad6a9" sha1="ac010aa7e0288197ff9342801522623b64dd2a47" region="maincpu" offset="1800"/>
+		<chip type="cpu" tag="maincpu" name="Z80" clock="2496000"/>
+		<sound channels="0"/>
+		<input players="1" buttons="6" coins="1">
+			<control type="paddle" minimum="0" maximum="63" sensitivity="100" keydelta="1"/>
+			<control type="pedal" minimum="0" maximum="31" sensitivity="100" keydelta="1"/>
+		</input>
+		<dipswitch name="Coinage" tag="DSW" mask="3">
+			<dipvalue name="2 Coins/1 Credit" value="2"/>
+			<dipvalue name="1 Coin/1 Credit" value="0" default="yes"/>
+			<dipvalue name="2 Coins/3 Credits" value="3"/>
+			<dipvalue name="1 Coin/2 Credits" value="1"/>
+		</dipswitch>
+		<dipswitch name="Extended Time" tag="DSW" mask="12">
+			<dipvalue name="20 seconds at 4000" value="0" default="yes"/>
+			<dipvalue name="30 seconds at 8000" value="4"/>
+			<dipvalue name="15 seconds at 8000" value="8"/>
+			<dipvalue name="30 seconds at 10000" value="12"/>
+			<dipvalue name="20 seconds at 6000" value="0" default="yes"/>
+			<dipvalue name="30 seconds at 9000" value="4"/>
+			<dipvalue name="20 seconds at 9000" value="8"/>
+			<dipvalue name="30 seconds at 12000" value="12"/>
+			<dipvalue name="20 seconds at 8000" value="0" default="yes"/>
+			<dipvalue name="30 seconds at 12000" value="4"/>
+			<dipvalue name="20 seconds at 12000" value="8"/>
+			<dipvalue name="30 seconds at 16000" value="12"/>
+			<dipvalue name="20 seconds at 10000" value="0" default="yes"/>
+			<dipvalue name="30 seconds at 15000" value="4"/>
+			<dipvalue name="20 seconds at 15000" value="8"/>
+			<dipvalue name="30 seconds at 20000" value="12"/>
+		</dipswitch>
+		<dipswitch name="Game Time" tag="DSW" mask="48">
+			<dipvalue name="60 seconds" value="0" default="yes"/>
+			<dipvalue name="70 seconds" value="16"/>
+			<dipvalue name="80 seconds" value="32"/>
+			<dipvalue name="90 seconds" value="48"/>
+		</dipswitch>
+		<dipswitch name="I/O Test" tag="DSW" mask="64">
+			<dipvalue name="Off" value="64" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<dipswitch name="Service Mode" tag="DSW" mask="128">
+			<dipvalue name="Off" value="128" default="yes"/>
+			<dipvalue name="On" value="0"/>
+		</dipswitch>
+		<driver status="preliminary" emulation="preliminary" color="good" sound="preliminary" graphic="good" savestate="unsupported" palettesize="0"/>
+	</game>	
 </mame>
 	
