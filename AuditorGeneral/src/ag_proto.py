@@ -15,6 +15,13 @@ MAME_XML_INFO_PATH="c:\\temp\\mame\\tools\\fullinfo.xml"
 MAME_ROM_DIR_PATH="c:\\temp\\mame\\roms"
 VERBOSE = True
 
+def formatMissingRomInfo(rom):
+    # Add up all rom.sizes to indicate exploded zip size...
+    # output name + rom name + parent info?
+    
+    print "Nicely Formatted!"
+    
+
 def getRomZipFileInfo(game):
     roms = {}
     fileList = []
@@ -26,15 +33,18 @@ def getRomZipFileInfo(game):
     if game.has_key('romof') and os.path.isfile(MAME_ROM_DIR_PATH + os.sep + game['romof'] + ".zip"):
         fileList.append(MAME_ROM_DIR_PATH + os.sep + game['romof'] + '.zip')
     
+    #TODO Check if order of this guaranteed? need to make sure child is processed first
     for file in fileList:   
         zip = zipfile.ZipFile(file, "r")
         infoList = zip.infolist()
         for info in infoList:
-            roms[info.filename] = info
+            if not roms.has_key(info.filename):
+                roms[info.filename] = info
     
     return roms
 
 def missingFromParent(game, rom, soup):
+    #TODO make sure its the same ROM, i.e. same name + same CRC!
     missingRomBelongsToParent = False
     
     if game.has_key('cloneof'):
@@ -46,7 +56,7 @@ def missingFromParent(game, rom, soup):
         if game.has_key('romof'):
             romof = soup.find('game', { 'name' : game['romof'] })
             if romof != None:
-                hasRom = romof.find('rom', {'name' : rom['name']}) != None
+                missingRomBelongsToParent = romof.find('rom', {'name' : rom['name']}) != None
         
     return missingRomBelongsToParent
 
@@ -74,10 +84,11 @@ def doMain():
                                     print "No CRC - " + game['name'] + " - " + rom['name']
                         else:
                             crc = int(rom['crc'], 16)
+                            foundCrc = foundRoms[rom['name']].CRC
                             # TODO why does 18w_b1 in 18w2.zip not add up!
-                            if foundRoms[rom['name']].CRC != crc:
+                            if foundCrc != crc:
                                 missing = True
-                                print "Incorrect crc for " + rom['name'] + " should be " + str(crc) + " but is " + str(foundRoms[rom['name']].CRC)
+                                print "Incorrect crc for " + rom['name'] + " should be " + str(crc) + " but is " + str(foundCrc)
                     else:
                         if rom.has_key('status'):
                             if rom['status'] != 'nodump':
