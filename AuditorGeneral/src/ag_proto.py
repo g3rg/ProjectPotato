@@ -10,8 +10,8 @@ import zipfile
 from BeautifulSoup import BeautifulSoup
 
 # TODO Switch to config files / cmdline params
-MAME_XML_INFO_PATH="..\\test\\small_mameinfo.xml"
-#MAME_XML_INFO_PATH="c:\\temp\\mame\\tools\\fullinfo.xml"
+#MAME_XML_INFO_PATH="..\\test\\small_mameinfo.xml"
+MAME_XML_INFO_PATH="c:\\temp\\mame\\tools\\fullinfo.xml"
 MAME_ROM_DIR_PATH="c:\\temp\\mame\\roms"
 VERBOSE = True
 
@@ -38,12 +38,15 @@ def missingFromParent(game, rom, soup):
     missingRomBelongsToParent = False
     
     if game.has_key('cloneof'):
-        cloneof = game['cloneof']
-        # TODO find rom info in soup, check if 'rom' belongs to it
+        cloneof = soup.find('game', { 'name' : game['cloneof'] })
+        if cloneof != None:
+            missingRomBelongsToParent = cloneof.find('rom', { 'name' : rom['name']}) != None
         
-    if game.has_key('romof'):
-        romof = game['romof']
-        # TODO find rom info in soup, check if 'rom' belongs to it
+    if not missingRomBelongsToParent:
+        if game.has_key('romof'):
+            romof = soup.find('game', { 'name' : game['romof'] })
+            if romof != None:
+                hasRom = romof.find('rom', {'name' : rom['name']}) != None
         
     return missingRomBelongsToParent
 
@@ -76,10 +79,12 @@ def doMain():
                                 missing = True
                                 print "Incorrect crc for " + rom['name'] + " should be " + str(crc) + " but is " + str(foundRoms[rom['name']].CRC)
                     else:
-                        # TODO work out if missing from parent, or child
-                        missing = missingFromParent(game, rom, soup)
-                        if missing:
-                            print "Missing rom " + rom['name']
+                        if rom.has_key('status'):
+                            if rom['status'] != 'nodump':
+                                missingInParent = missingFromParent(game, rom, soup)
+                                if not missingInParent:
+                                    missing = True
+                                    print "Missing rom " + rom['name']
                 
             elif os.path.isdir(dirPath):
                 None
