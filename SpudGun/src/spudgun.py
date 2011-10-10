@@ -15,7 +15,7 @@ class SpudGun:
         pygame.display.init()
         pygame.font.init()
         self.screen = pygame.display.set_mode([200,200], NOFRAME)
-        pygame.display.set_caption('SpugGun')
+        pygame.display.set_caption('SpudGun')
         self.screen_rect = self.screen.get_rect()
         self.update()
 
@@ -33,7 +33,7 @@ class SpudGun:
 def main():
     sg = SpudGun()
     pygame.time.wait(2500)
-    sg.drawText("TEST")
+    sg.drawText("SpudGun")
     sg.update()
     pygame.time.wait(2500)
     sys.exit(1)

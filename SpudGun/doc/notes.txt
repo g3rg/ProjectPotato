@@ -1,0 +1,8 @@
+SpudGun Entertainment
+
+Version 0.1
+[ ] PyGame full screen menu
+	[x] simple text on a screen - SpudGun
+	[ ] app event loop
+	[ ] exit on keypress
+	[ ] full screen 
