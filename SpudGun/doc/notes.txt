@@ -8,9 +8,27 @@ Version 0.1
 	[x] full screen
 	[x] keymappings class
 	
-	[ ] config file loading / saving
+	[x] config file loading / saving
+		[x] keymappings
+	
+	[ ] add debug 
+	
+	[ ] command line arguments
+		[ ] debug flag
+		[ ] config file path
+		
+	[ ] on screen section for message - e.g. failed to open config file
 
 	[ ] unit tests for keymappings and config handling
 	
 	[ ] intro movie
 	[ ] screensaver 
+	[ ] main menu
+		[ ] Games
+		[ ] Audio
+		[ ] Visuals
+		[ ] Browser
+		[ ] settings menu
+		
+	[ ] Plugin architecture?
+	
