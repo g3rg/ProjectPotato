@@ -76,53 +76,48 @@ def doMain():
     mameInfo = MameInfo()
     mameInfo.loadMameInfoFromPath(MAME_XML_INFO_PATH)
     
-    if os.path.isfile(MAME_XML_INFO_PATH) and os.path.isdir(MAME_ROM_DIR_PATH):
-        infoFile = open(MAME_XML_INFO_PATH, "r")
-        soup = BeautifulSoup(infoFile.read())
-        games = soup.findAll("game")
-        missingZipCount = 0
-        for game in games:
-            filePath = MAME_ROM_DIR_PATH + os.sep + game['name'] + ".zip"
-            dirPath = MAME_ROM_DIR_PATH + os.sep + game['name']
-            missing = False
-            if os.path.isfile(filePath):
-                
-                foundRoms = getRomZipFileInfo(game)
-                roms = game.findAll('rom')
-                for rom in roms:
-                    if rom['name'] in foundRoms:
-                        # TODO Check CRC
-                        if not rom.has_key('crc'):
-                            if rom.has_key('status'):
-                                if rom['status'] != 'nodump': 
-                                    print "No CRC - " + game['name'] + " - " + rom['name']
-                        else:
-                            crc = int(rom['crc'], 16)
-                            foundCrc = foundRoms[rom['name']].CRC
-                            # TODO why does 18w_b1 in 18w2.zip not add up!
-                            if foundCrc != crc:
-                                missing = True
-                                print "Incorrect crc for " + rom['name'] + " should be " + str(crc) + " but is " + str(foundCrc)
-                    else:
-                        if rom.has_key('status'):
-                            if rom['status'] != 'nodump':
-                                missingInParent = missingFromParent(game, rom, soup)
-                                if not missingInParent:
-                                    missing = True
-                                    print "Missing rom " + rom['name']
-                
-            elif os.path.isdir(dirPath):
-                None
-            else:
-                missing = True
-                
-            if missing:
-                print "Missing set " + game['name']
-                missingZipCount = missingZipCount + 1
-
-    
+    if len(mameInfo.games) == 0:
+        print "No games found in Mame Info"
     else:
-        print "Mame info file and / or Mame rom dir not found"
+        if os.path.isdir(MAME_ROM_DIR_PATH):
+            missingZipCount = 0
+            for game in mameInfo.games:
+                filePath = MAME_ROM_DIR_PATH + os.sep + game.name + ".zip"
+                dirPath = MAME_ROM_DIR_PATH + os.sep + game.name
+                missing = False
+                if os.path.isfile(filePath):
+                    
+                    foundRoms = getRomZipFileInfo(game)
+                    for rom in game.roms:
+                        if rom['name'] in foundRoms:
+                            # TODO Check CRC
+                            if not rom.has_key('crc'):
+                                if rom.has_key('status'):
+                                    if rom['status'] != 'nodump': 
+                                        print "No CRC - " + game['name'] + " - " + rom['name']
+                            else:
+                                crc = int(rom['crc'], 16)
+                                foundCrc = foundRoms[rom['name']].CRC
+                                # TODO why does 18w_b1 in 18w2.zip not add up!
+                                if foundCrc != crc:
+                                    missing = True
+                                    print "Incorrect crc for " + rom['name'] + " should be " + str(crc) + " but is " + str(foundCrc)
+                        else:
+                            if rom.has_key('status'):
+                                if rom['status'] != 'nodump':
+                                    missingInParent = missingFromParent(game, rom, soup)
+                                    if not missingInParent:
+                                        missing = True
+                                        print "Missing rom " + rom['name']
+                    
+                elif os.path.isdir(dirPath):
+                    None
+                else:
+                    missing = True
+                
+                if missing:
+                    print "Missing set " + game['name']
+                    missingZipCount = missingZipCount + 1
 
 if __name__ == '__main__':
     doMain()
