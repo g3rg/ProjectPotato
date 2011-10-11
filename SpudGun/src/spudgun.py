@@ -5,10 +5,51 @@ Created on 10/10/2011
 '''
 
 import pygame
-from pygame.locals import NOFRAME, KEYDOWN, KEYUP, FULLSCREEN
+from pygame.locals import NOFRAME, KEYDOWN, KEYUP, FULLSCREEN, K_UP, K_DOWN, K_LEFT, K_RIGHT, K_LCTRL, K_ESCAPE
 
 APP_NAME = 'SpudGun'
 
+class KeyMap:
+    keyUp = K_UP
+    keyDown = K_DOWN
+    keyLeft = K_LEFT
+    keyRight = K_RIGHT
+    keyExec = K_LCTRL
+    keyQuit = K_ESCAPE
+
+    def __init__(self):
+        None
+
+    def isQuit(self, event):
+        return event.type == KEYDOWN and event.key == self.keyQuit
+    
+    def setQuit(self, keycode):
+        self.keyQuit = keycode
+             
+    def isKeyUp(self, event):
+        return event.type == KEYDOWN and event.key == self.keyUp
+
+    def setKeyUp(self, keycode):
+        self.keyUp = keycode
+
+    def isKeyDown(self, event):
+        return event.type == KEYDOWN and event.key == self.keyDown
+
+    def setKeyDown(self, keycode):
+        self.keyDown = keycode
+
+    def isKeyLeft(self, event):
+        return event.type == KEYDOWN and event.key == self.keyLeft
+
+    def setKeyLeft(self, keycode):
+        self.keyLeft = keycode
+
+    def isKeyRight(self, event):
+        return event.type == KEYDOWN and event.key == self.keyRight
+    
+    def setKeyRight(self, keycode):
+        self.keyRight = keycode
+        
 class SpudGun:
     
     def __init__(self):
@@ -27,12 +68,13 @@ class SpudGun:
         
         pygame.key.set_repeat(500,30) 
         pygame.time.Clock() 
-        
-    def intro(self):
+
+        # Display intro - Movie?
         pygame.time.wait(2500)
         self.drawText("SpudGun")
         self.update()
-        pygame.time.wait(2500)
+        
+        self.keyMap = KeyMap()
 
     def mainLoop(self):
         lastEventTicks = pygame.time.get_ticks()
@@ -44,7 +86,7 @@ class SpudGun:
                 if event.type == KEYDOWN or event.type == KEYUP:
                     lastEventTicks = pygame.time.get_ticks()
                     
-                if event.type == KEYDOWN:
+                if self.keyMap.isQuit(event):
                     notQuitting = False
 
     def drawText(self, string):
@@ -59,7 +101,6 @@ class SpudGun:
 
 def main():
     sg = SpudGun()
-    sg.intro()
     sg.mainLoop()
     
 if __name__ == '__main__':

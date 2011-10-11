@@ -6,8 +6,11 @@ Version 0.1
 	[x] app event loop
 	[x] exit on keypress
 	[x] full screen
+	[x] keymappings class
 	
 	[ ] config file loading / saving
-	[ ] keymappings class
-		[ ] map function to keycode
-	[ ] 
+
+	[ ] unit tests for keymappings and config handling
+	
+	[ ] intro movie
+	[ ] screensaver 
