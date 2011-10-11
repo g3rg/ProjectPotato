@@ -3,6 +3,11 @@ SpudGun Entertainment
 Version 0.1
 [ ] PyGame full screen menu
 	[x] simple text on a screen - SpudGun
-	[ ] app event loop
-	[ ] exit on keypress
-	[ ] full screen 
+	[x] app event loop
+	[x] exit on keypress
+	[x] full screen
+	
+	[ ] config file loading / saving
+	[ ] keymappings class
+		[ ] map function to keycode
+	[ ] 
