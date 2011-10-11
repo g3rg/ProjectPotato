@@ -8,44 +8,16 @@ import os
 import zipfile
 
 from BeautifulSoup import BeautifulSoup
+from mameinfo import MameInfo
 
 # TODO Switch to config files / cmdline params
-MAME_XML_INFO_PATH="..\\test\\small_mameinfo.xml"
+#MAME_XML_INFO_PATH="..\\test\\small_mameinfo.xml"
+MAME_XML_INFO_PATH="../test/small_mameinfo.xml"
 #MAME_XML_INFO_PATH="c:\\temp\\mame\\tools\\fullinfo.xml"
 MAME_ROM_DIR_PATH="c:\\temp\\mame\\roms"
 VERBOSE = True
 
-class GameInfo:
-    def __init__(self):
-        self.name = ""
-        self.cloneof = None
-        self.romof = None
-        self.sampleof = None
-        self.year = 1900
-        self.description = ""
-        self.roms = {}
-        self.samples = []
-        self.driverStatus = ""
-        self.driverEmulationStatus = ""
-        self.driverColorStatus = ""
-        self.driverSoundStatus = ""
-        self.driverGraphicStatus = ""
 
-class RomInfo:
-    def __init__(self):
-        self.name = ""
-        self.size = 0
-        self.crc = ""
-        self.status = None
- 
-class DiskInfo:
-    def __init__(self):
-        self.name = ""
-        self.md5 = ""
-        self.sha1 = ""
-        self.status = ""
-        self.optional = False
- 
  
 
 def formatMissingRomInfo(rom):
@@ -93,13 +65,6 @@ def missingFromParent(game, rom, soup):
         
     return missingRomBelongsToParent
 
-def loadMameInfoFile(path):
-    infoFile = open(MAME_XML_INFO_PATH, 'r')
-    soup = BeautifulSoup(infoFile.read())
-    
-    buildName = soup.find('mame')['build']
-    
-    return None
 
 def doMain():
     print "Analysing!"
@@ -108,7 +73,8 @@ def doMain():
         print "Mame info file not found <" + MAME_XML_INFO_PATH
         exit(1)
     
-    mameInfo = loadMameInfoFile(MAME_XML_INFO_PATH)
+    mameInfo = MameInfo()
+    mameInfo.loadMameInfoFromPath(MAME_XML_INFO_PATH)
     
     if os.path.isfile(MAME_XML_INFO_PATH) and os.path.isdir(MAME_ROM_DIR_PATH):
         infoFile = open(MAME_XML_INFO_PATH, "r")
